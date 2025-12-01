@@ -1,115 +1,129 @@
 import 'package:flutter/material.dart';
 
-class RegisterScreen extends StatefulWidget {
+// Definisi Warna Kustom (sama seperti di login_screen.dart)
+const Color primaryBrown = Color(0xFFC0A272);
+const Color lightBrown = Color(0xFFEFE0C2);
+
+class RegisterScreen extends StatelessWidget {
   const RegisterScreen({super.key});
-
-  @override
-  State<RegisterScreen> createState() => _RegisterScreenState();
-}
-
-class _RegisterScreenState extends State<RegisterScreen> {
-  bool _obscure = true;
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.white,
-
-      appBar: AppBar(
-        backgroundColor: const Color(0xFF81564B),
-        elevation: 0,
-        leading: IconButton(
-          icon: const Icon(Icons.arrow_back, color: Colors.white),
-          onPressed: () => Navigator.pop(context),
-        ),
-        title: const Text(
-          "Daftar Akun",
-          style: TextStyle(color: Colors.white),
-        ),
-        centerTitle: false,
-      ),
-
-      body: SingleChildScrollView(
-        padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 30),
-        child: Column(
-          children: [
-            const SizedBox(height: 10),
-            const Text(
-              "Buat Akun Baru",
-              style: TextStyle(
-                fontSize: 22,
-                fontWeight: FontWeight.bold,
+      backgroundColor: lightBrown,
+      body: Stack(
+        children: [
+          // 1. Gambar Latar Belakang (Menggunakan Placeholder)
+          Container(
+            height: MediaQuery.of(context).size.height * 0.65,
+            decoration: const BoxDecoration(
+              image: DecorationImage(
+                image: AssetImage('assets/coffee_bg.jpg'), // Ganti path
+                fit: BoxFit.cover,
               ),
             ),
+          ),
 
-            const SizedBox(height: 30),
-
-            // NAMA
-            TextField(
-              decoration: InputDecoration(
-                prefixIcon: const Icon(Icons.person_outline),
-                hintText: "Nama lengkap",
-                border: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(10),
-                ),
+          // 2. Konten Utama (Register Box)
+          Align(
+            alignment: Alignment.bottomCenter,
+            child: Container(
+              height: MediaQuery.of(context).size.height * 0.75, // Dibuat lebih tinggi
+              decoration: BoxDecoration(
+                color: Colors.transparent,
+                borderRadius: BorderRadius.circular(30),
               ),
-            ),
-
-            const SizedBox(height: 20),
-
-            // EMAIL
-            TextField(
-              decoration: InputDecoration(
-                prefixIcon: const Icon(Icons.email_outlined),
-                hintText: "Email",
-                border: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(10),
-                ),
-              ),
-            ),
-
-            const SizedBox(height: 20),
-
-            // PASSWORD
-            TextField(
-              obscureText: _obscure,
-              decoration: InputDecoration(
-                prefixIcon: const Icon(Icons.lock_outline),
-                suffixIcon: IconButton(
-                  icon: Icon(
-                      _obscure ? Icons.visibility_off : Icons.visibility),
-                  onPressed: () {
-                    setState(() => _obscure = !_obscure);
-                  },
-                ),
-                hintText: "Password",
-                border: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(10),
-                ),
-              ),
-            ),
-
-            const SizedBox(height: 30),
-
-            // TOMBOL DAFTAR
-            SizedBox(
-              width: double.infinity,
-              height: 48,
-              child: ElevatedButton(
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: const Color(0xFF81564B),
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(10),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.stretch,
+                children: [
+                  // Box Register dengan Opacity
+                  Container(
+                    margin: EdgeInsets.only(
+                        top: MediaQuery.of(context).size.height * 0.15,
+                        left: 20,
+                        right: 20),
+                    padding: const EdgeInsets.all(20),
+                    decoration: BoxDecoration(
+                      color: Colors.white.withOpacity(0.7), // Opacity transparan
+                      borderRadius: BorderRadius.circular(15),
+                    ),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        // Tombol Kembali
+                        IconButton(
+                          icon: const Icon(Icons.arrow_back, color: primaryBrown),
+                          onPressed: () {
+                            Navigator.pop(context);
+                          },
+                        ),
+                        const Text(
+                          'Mendaftar',
+                          style: TextStyle(
+                              fontSize: 32, fontWeight: FontWeight.bold),
+                        ),
+                        const SizedBox(height: 20),
+                        _buildTextField(
+                            hint: 'Email', icon: Icons.mail_outline),
+                        const SizedBox(height: 15),
+                        _buildTextField(
+                            hint: 'Kata Sandi',
+                            icon: Icons.lock_outline,
+                            isPassword: true),
+                        const SizedBox(height: 15),
+                        _buildTextField(
+                            hint: 'Konfirmasi Kata Sandi',
+                            icon: Icons.lock_outline,
+                            isPassword: true),
+                      ],
+                    ),
                   ),
-                ),
-                onPressed: () {},
-                child: const Text(
-                  "DAFTAR",
-                  style: TextStyle(color: Colors.white, fontSize: 16),
-                ),
+
+                  // Padding untuk tombol
+                  const SizedBox(height: 30),
+
+                  // Tombol Mendaftar
+                  Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 20.0),
+                    child: ElevatedButton(
+                      onPressed: () {},
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: primaryBrown,
+                        foregroundColor: Colors.white,
+                        padding: const EdgeInsets.symmetric(vertical: 15),
+                        shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(10)),
+                      ),
+                      child: const Text('Mendaftar',
+                          style: TextStyle(
+                              fontSize: 18, fontWeight: FontWeight.bold)),
+                    ),
+                  ),
+                ],
               ),
             ),
-          ],
+          ),
+        ],
+      ),
+    );
+  }
+
+  // Widget Pembantu untuk Input Text
+  Widget _buildTextField(
+      {required String hint, required IconData icon, bool isPassword = false}) {
+    return Container(
+      decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(8),
+        border: Border.all(color: Colors.grey.shade300),
+      ),
+      child: TextField(
+        obscureText: isPassword,
+        decoration: InputDecoration(
+          hintText: hint,
+          border: InputBorder.none,
+          contentPadding: const EdgeInsets.all(15),
+          prefixIcon: Icon(icon, color: primaryBrown),
         ),
       ),
     );
