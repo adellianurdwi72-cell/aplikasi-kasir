@@ -1,11 +1,20 @@
 import 'package:flutter/material.dart';
 
-// --- Data Dummy Pelanggan (Ganti dengan data model & provider Anda) ---
+// Hapus jika nanti memakai provider asli
+// import 'package:provider/provider.dart';
+// import 'package:providers/customer_provider.dart';
+// import 'package:widgets/customer_form.dart';
+
+
+// ==========================================================
+//  MODEL CUSTOMER (Dummy)
+//  Nanti tinggal ganti dengan model asli dari Provider / Supabase
+// ==========================================================
 class Customer {
   final String name;
   final String phone;
   final String status;
-  final String avatarUrl; // Placeholder for image asset or network URL
+  final String avatarUrl;
 
   Customer({
     required this.name,
@@ -29,37 +38,37 @@ final List<Customer> dummyCustomers = [
   Customer(name: 'Savero Archandra', phone: '082414254667', status: 'Aktif', avatarUrl: 'assets/avatar11.jpg'),
   Customer(name: 'Anvaya Raespati', phone: '084656264577', status: 'Aktif', avatarUrl: 'assets/avatar12.jpg'),
   Customer(name: 'Rajash Bimantara', phone: '085213476481', status: 'Aktif', avatarUrl: 'assets/avatar13.jpg'),
-  // ... Tambahkan data lain sesuai gambar
 ];
-// --------------------------------------------------------------------
 
+
+// ==========================================================
+//  MAIN SCREEN
+// ==========================================================
 class CustomerListScreen extends StatelessWidget {
   const CustomerListScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
-    // Warna yang mirip dengan gambar
-    const Color primaryColor = Color(0xFFC8A77E); // Coklat Muda
+    const Color primaryColor = Color(0xFFC8A77E);
     const Color darkBrown = Color(0xFF8B6B4F);
 
     return Scaffold(
       appBar: PreferredSize(
-        preferredSize: const Size.fromHeight(120.0), // Tinggi AppBar kustom
+        preferredSize: const Size.fromHeight(120),
         child: Container(
-          color: primaryColor, // Background AppBar
+          color: primaryColor,
           padding: const EdgeInsets.only(top: 40, left: 16, right: 16, bottom: 10),
           child: Column(
             children: [
-              // Bagian Atas: Panah, Judul, Ikon Kunci
+              // --- HEADER ---
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   IconButton(
                     icon: const Icon(Icons.arrow_back, color: Colors.black),
-                    onPressed: () {
-                      Navigator.pop(context);
-                    },
+                    onPressed: () => Navigator.pop(context),
                   ),
+
                   const Text(
                     'Data Pelanggan',
                     style: TextStyle(
@@ -68,6 +77,7 @@ class CustomerListScreen extends StatelessWidget {
                       color: Colors.black,
                     ),
                   ),
+
                   Container(
                     padding: const EdgeInsets.all(8),
                     decoration: BoxDecoration(
@@ -78,8 +88,10 @@ class CustomerListScreen extends StatelessWidget {
                   ),
                 ],
               ),
+
               const SizedBox(height: 10),
-              // Kolom Pencarian
+
+              // --- SEARCH BAR ---
               Container(
                 height: 40,
                 decoration: BoxDecoration(
@@ -100,23 +112,32 @@ class CustomerListScreen extends StatelessWidget {
           ),
         ),
       ),
+
+      // ==========================================================
+      //  BODY
+      // ==========================================================
       body: Column(
         children: [
-          // Baris Menu Aksi
+          // --- ACTION MENU ---
           Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 10.0, vertical: 8.0),
+            padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 8),
             child: Row(
               children: [
-                const Icon(Icons.check_box_outline_blank, color: Colors.grey), // Checkbox 'Semua'
+                const Icon(Icons.check_box_outline_blank, color: Colors.grey),
                 const SizedBox(width: 10),
+
                 Container(
                   padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
                   decoration: BoxDecoration(
                     color: primaryColor,
                     borderRadius: BorderRadius.circular(4),
                   ),
-                  child: const Text('Semua pelanggan', style: TextStyle(fontSize: 12, color: darkBrown)),
+                  child: const Text(
+                    'Semua pelanggan',
+                    style: TextStyle(fontSize: 12, color: darkBrown),
+                  ),
                 ),
+
                 const Spacer(),
                 const Icon(Icons.edit, color: Colors.grey, size: 20),
                 const SizedBox(width: 15),
@@ -126,9 +147,10 @@ class CustomerListScreen extends StatelessWidget {
               ],
             ),
           ),
+
           const Divider(height: 1, thickness: 1, color: Colors.grey),
 
-          // Daftar Pelanggan
+          // --- LIST CUSTOMER ---
           Expanded(
             child: ListView.builder(
               itemCount: dummyCustomers.length,
@@ -143,6 +165,10 @@ class CustomerListScreen extends StatelessWidget {
   }
 }
 
+
+// ==========================================================
+//  ITEM LIST PELANGGAN
+// ==========================================================
 class CustomerListItem extends StatelessWidget {
   final Customer customer;
 
@@ -150,32 +176,45 @@ class CustomerListItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // --- Implementasi tampilan satu item pelanggan seperti yang diminta sebelumnya ---
     return Padding(
-      padding: const EdgeInsets.symmetric(vertical: 8.0, horizontal: 16.0),
+      padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 16),
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          // Checkbox
           const Padding(
-            padding: EdgeInsets.only(top: 8.0, right: 10.0),
+            padding: EdgeInsets.only(top: 8, right: 10),
             child: Icon(Icons.check_box_outline_blank, color: Colors.grey),
           ),
-          // Avatar
+
+          // --- AVATAR ---
           CircleAvatar(
             radius: 20,
-            // Ganti dengan Image.asset atau NetworkImage yang sesuai
-            backgroundColor: Colors.grey.shade200, 
-            child: const Icon(Icons.person, color: Colors.white), 
+            backgroundColor: Colors.grey.shade300,
+            backgroundImage: AssetImage(customer.avatarUrl),
           ),
+
           const SizedBox(width: 15),
-          // Detail Teks
+
+          // --- TEXT DETAIL ---
           Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Text(customer.name, style: const TextStyle(fontWeight: FontWeight.bold)),
-              Text(customer.phone, style: TextStyle(color: Colors.grey.shade700)),
-              Text(customer.status, style: TextStyle(color: customer.status == 'Aktif' ? Colors.black : Colors.red)),
+              Text(
+                customer.name,
+                style: const TextStyle(fontWeight: FontWeight.bold),
+              ),
+              Text(
+                customer.phone,
+                style: TextStyle(color: Colors.grey.shade700),
+              ),
+              Text(
+                customer.status,
+                style: TextStyle(
+                  color: customer.status == 'Aktif'
+                      ? Colors.black
+                      : Colors.redAccent,
+                ),
+              ),
             ],
           ),
         ],

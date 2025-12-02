@@ -30,6 +30,7 @@ environment:
 dependencies:
   supabase_flutter: ^2.3.0
   provider: ^6.1.2
+  fl_chart: ^0.68.0
 
   flutter:
     sdk: flutter
