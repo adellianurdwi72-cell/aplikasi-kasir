@@ -6,8 +6,9 @@ import 'providers/dashboard_provider.dart';
 import 'screens/home_menu_screen.dart';
 import 'screens/login_screen.dart';
 import 'screens/register_screen.dart';
+import 'screens/product_screen.dart';
 
-void main() async {
+Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
   await Supabase.initialize(
@@ -31,10 +32,16 @@ class MyApp extends StatelessWidget {
       child: MaterialApp(
         debugShowCheckedModeBanner: false,
         title: "Aplikasi Kasir",
-        home: const HomeMenuScreen(),
+        theme: ThemeData(
+          primarySwatch: Colors.blue,
+          visualDensity: VisualDensity.adaptivePlatformDensity,
+        ),
+        initialRoute: "/",
         routes: {
+          "/": (context) => const HomeMenuScreen(),
           "/login": (context) => const LoginScreen(),
           "/register": (context) => const RegisterScreen(),
+          "/product": (context) => const ProductManagementScreen(),
         },
       ),
     );
