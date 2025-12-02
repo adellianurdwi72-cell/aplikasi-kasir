@@ -8,7 +8,7 @@ class ProductService {
   Future<List<Product>> getProducts() async {
     final response = await supabase.from('products').select('*');
 
-    return response.map((item) => Product.fromJson(item)).toList();
+    return response.map((item) => Product.fromJson(item as Map<String, dynamic>)).toList();
   }
 
   // CREATE ---------------------------------------

@@ -27,7 +27,7 @@ class CustomerEditScreen extends StatelessWidget {
           alamat: customer.alamat,
           onSubmit: (name, phone, alamat) async {
             // Panggil provider untuk update data
-            await Provider.of<CustomerProvider>(context, listen: false)
+            await Provider.of<CustomerEditScreen>(context, listen: false)
                 .updateCustomer(customer.id, name, phone, alamat);
 
             // Tutup halaman setelah berhasil update

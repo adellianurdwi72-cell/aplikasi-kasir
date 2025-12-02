@@ -1,5 +1,5 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import '../models/customer.dart';
+import '../models/customer_model.dart';
 import '../services/customer_service.dart';
 
 class CustomerNotifier extends StateNotifier<List<Customer>> {
