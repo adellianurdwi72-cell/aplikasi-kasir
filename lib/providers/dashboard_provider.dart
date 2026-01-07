@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
+import 'package:postgrest/postgrest.dart';
 
 class DashboardProvider extends ChangeNotifier {
   final supabase = Supabase.instance.client;
@@ -26,54 +27,50 @@ class DashboardProvider extends ChangeNotifier {
       // ==============================
       // 1. TOTAL TRANSAKSI
       // ==============================
-      final trx = await supabase
+      final trxResponse = await supabase
           .from('penjualan')
-          .select('*', const FetchOptions(count: CountOption.exact));
+          .select('id')
+          .count(CountOption.exact);
 
-      totalTransaksi = trx.count ?? 0;
+      totalTransaksi = trxResponse.count ?? 0;
 
       // ==============================
       // 2. PRODUK TERLARIS
       // ==============================
-      final populer = await supabase
+      final populerResponse = await supabase
           .from('produk')
           .select('jumlah_terjual')
           .order('jumlah_terjual', ascending: false)
           .limit(1);
 
-      if (populer.isNotEmpty) {
-        produkTerlaris = populer.first['jumlah_terjual'] ?? 0;
-      } else {
-        produkTerlaris = 0;
-      }
+      final populer = populerResponse as List?;
+      produkTerlaris =
+          (populer != null && populer.isNotEmpty) ? populer.first['jumlah_terjual'] ?? 0 : 0;
 
       // ==============================
       // 3. STOK MENIPIS (stok <= 5)
       // ==============================
-      final menipis = await supabase
+      final stokResponse = await supabase
           .from('produk')
           .select('id')
           .lte('stok', 5);
 
-      stokMenipis = menipis.length;
+      final menipis = stokResponse as List?;
+      stokMenipis = menipis?.length ?? 0;
 
       // ==============================
       // 4. GRAFIK PENDAPATAN BULANAN (RPC)
       // ==============================
-      final grafik = await supabase.rpc('get_pendapatan_bulanan');
+      final grafikResponse = await supabase.rpc('get_pendapatan_bulanan');
 
-      grafikPendapatan =
-          List<Map<String, dynamic>>.from(grafik ?? []);
+      grafikPendapatan = List<Map<String, dynamic>>.from(grafikResponse ?? []);
 
       // ==============================
       // 5. PENDAPATAN BULAN INI
       // ==============================
-      if (grafikPendapatan.isNotEmpty) {
-        pendapatanBulanIni =
-            (grafikPendapatan.last['total'] ?? 0).toDouble();
-      } else {
-        pendapatanBulanIni = 0.0;
-      }
+      pendapatanBulanIni = grafikPendapatan.isNotEmpty
+          ? (grafikPendapatan.last['total'] ?? 0).toDouble()
+          : 0.0;
 
       isLoading = false;
       notifyListeners();
@@ -85,7 +82,7 @@ class DashboardProvider extends ChangeNotifier {
   }
 
   // ==========================================================
-  //  LISTEN REALTIME: UPDATE DASHBOARD KETIKA ADA TRANSAKSI
+  // LISTEN REALTIME: UPDATE DASHBOARD KETIKA ADA TRANSAKSI
   // ==========================================================
   void listenRealtime() {
     supabase.channel('realtime_dashboard')

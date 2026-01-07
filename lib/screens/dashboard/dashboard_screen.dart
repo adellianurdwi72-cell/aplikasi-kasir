@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../../providers/dashboard_provider.dart';
+import '../../providers/auth_provider.dart';
 import 'dashboard_header.dart';
 import 'dashboard_stat_card.dart';
 import 'dashboard_chart.dart';
@@ -14,6 +15,19 @@ class DashboardScreen extends StatelessWidget {
       builder: (context, dash, _) {
         return Scaffold(
           backgroundColor: const Color(0xFFD6BD8A),
+          appBar: AppBar(
+            backgroundColor: Colors.transparent,
+            elevation: 0,
+            actions: [
+              IconButton(
+                icon: const Icon(Icons.logout, color: Colors.black),
+                onPressed: () async {
+                  await context.read<AuthProvider>().logout();
+                  // Tidak perlu Navigator jika pakai AuthGate
+                },
+              ),
+            ],
+          ),
           body: SafeArea(
             child: SingleChildScrollView(
               padding: const EdgeInsets.all(20),
@@ -34,14 +48,20 @@ class DashboardScreen extends StatelessWidget {
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        const Text("Ringkasan Penjualan",
-                            style: TextStyle(
-                                fontSize: 18, fontWeight: FontWeight.bold)),
+                        const Text(
+                          "Ringkasan Penjualan",
+                          style: TextStyle(
+                            fontSize: 18,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
                         const SizedBox(height: 5),
                         Text(
                           "Rp. ${dash.pendapatanBulanIni.toStringAsFixed(0)}",
                           style: const TextStyle(
-                              fontSize: 26, fontWeight: FontWeight.bold),
+                            fontSize: 26,
+                            fontWeight: FontWeight.bold,
+                          ),
                         ),
                         const SizedBox(height: 5),
                         const Text(
@@ -54,7 +74,7 @@ class DashboardScreen extends StatelessWidget {
 
                   const SizedBox(height: 20),
 
-                  // 4 CARD STATISTIK
+                  // CARD STATISTIK
                   Row(
                     children: [
                       Expanded(
@@ -96,7 +116,7 @@ class DashboardScreen extends StatelessWidget {
 
                   const SizedBox(height: 20),
 
-                  // GRAFIK PENJUALAN
+                  // GRAFIK
                   DashboardChart(data: dash.grafikPendapatan),
                 ],
               ),

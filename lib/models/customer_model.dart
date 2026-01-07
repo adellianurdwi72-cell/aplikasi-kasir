@@ -13,13 +13,15 @@ class Customer {
     required this.createdAt,
   });
 
-  factory Customer.fromJson(Map<String, dynamic> json) {
+  // Ganti nama ke fromMap agar sesuai dengan Service Anda
+  factory Customer.fromMap(Map<String, dynamic> json) {
     return Customer(
-      id: json['id'],
-      name: json['name'],
-      phone: json['phone'],
-      alamat: json['alamat'],
-      createdAt: json['created_at'],
+      // Tambahkan .toString() dan ?? '' (null safety)
+      id: json['id']?.toString() ?? '', 
+      name: json['name']?.toString() ?? '',
+      phone: json['phone']?.toString() ?? '',
+      alamat: json['alamat']?.toString() ?? '',
+      createdAt: json['created_at']?.toString() ?? '',
     );
   }
 }

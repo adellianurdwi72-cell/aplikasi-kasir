@@ -2,7 +2,7 @@ import 'package:aplikasi_kasir/screens/dashboard/dashboard_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 import 'login_screen.dart'; 
-import 'dashboard_screen.dart'; // Asumsikan ini adalah path yang benar ke DashboardScreen
+import 'dashboard/dashboard_screen.dart'; // Asumsikan ini adalah path yang benar ke DashboardScreen
 
 class SplashScreen extends StatefulWidget {
   const SplashScreen({super.key});

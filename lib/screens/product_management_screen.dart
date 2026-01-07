@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import '../models/product_model.dart';
-import '../widgets/product_summary_card.dart';
 import '../widgets/product_item.dart';
+import '../widgets/procuct_summary_card.dart';
 import '../widgets/category_selector.dart';
 
 class ProductManagementScreen extends StatefulWidget {
@@ -34,14 +34,17 @@ class _ProductManagementScreenState extends State<ProductManagementScreen> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              // BACK + TITLE + SETTINGS
+              // HEADER
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: const [
                   Icon(Icons.arrow_back, size: 26),
                   Text(
                     "Manajemen Produk",
-                    style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+                    style: TextStyle(
+                      fontSize: 20,
+                      fontWeight: FontWeight.bold,
+                    ),
                   ),
                   Icon(Icons.settings, size: 26),
                 ],
@@ -49,7 +52,7 @@ class _ProductManagementScreenState extends State<ProductManagementScreen> {
 
               const SizedBox(height: 20),
 
-              // SUMMARY BOX
+             // SUMMARY CARD GROUP
               Container(
                 padding: const EdgeInsets.all(16),
                 decoration: BoxDecoration(
@@ -57,46 +60,41 @@ class _ProductManagementScreenState extends State<ProductManagementScreen> {
                   borderRadius: BorderRadius.circular(16),
                 ),
                 child: Column(
-                  children: const [
+                  children: [
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                       child: Column(
-                        children: [
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              ProductSummaryCard(
-                                icon: Icons.inventory_2,
-                                title: "Total produk",
-                                value: "24",
-                              ),
-                              ProductSummaryCard(
-                                icon: Icons.receipt_long,
-                                title: "Order",
-                                value: "700+",
-                              ),
-                            ],
-                          ),
-                          const SizedBox(height: 16),
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              ProductSummaryCard(
-                                icon: Icons.warehouse,
-                                title: "Total stok",
-                                value: "1347",
-                              ),
-                              ProductSummaryCard(
-                                icon: Icons.warning_amber,
-                                title: "Stok menipis",
-                                value: "7",
-                              ),
-                            ],
-                          ),
-                        ],
-                      ),
-
+                      children: const [
+                        ProductSummaryCard(
+                          icon: Icons.inventory_2,
+                          title: "Total produk",
+                          value: "24",
+                        ),
+                        ProductSummaryCard(
+                          icon: Icons.receipt_long,
+                          title: "Order",
+                          value: "700+",
+                        ),
+                      ],
+                    ),
+                    const SizedBox(height: 16),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: const [
+                        ProductSummaryCard(
+                          icon: Icons.warehouse,
+                          title: "Total stok",
+                          value: "1347",
+                        ),
+                        ProductSummaryCard(
+                          icon: Icons.warning_amber,
+                          title: "Stok menipis",
+                          value: "7",
+                        ),
+                      ],
+                    ),
+                  ],
+                ),
+              ),
 
               const SizedBox(height: 20),
 
@@ -105,9 +103,7 @@ class _ProductManagementScreenState extends State<ProductManagementScreen> {
                 categories: const ["Semua", "Kopi", "Non-Kopi", "Camilan"],
                 selected: selectedCategory,
                 onSelected: (c) {
-                  setState(() {
-                    selectedCategory = c;
-                  });
+                  setState(() => selectedCategory = c);
                 },
               ),
 
@@ -127,11 +123,11 @@ class _ProductManagementScreenState extends State<ProductManagementScreen> {
                 child: ElevatedButton(
                   style: ElevatedButton.styleFrom(
                     backgroundColor: Colors.brown,
+                    padding:
+                        const EdgeInsets.symmetric(horizontal: 28, vertical: 12),
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(12),
                     ),
-                    padding: const EdgeInsets.symmetric(
-                        horizontal: 30, vertical: 12),
                   ),
                   onPressed: () {},
                   child: const Text(
@@ -142,13 +138,8 @@ class _ProductManagementScreenState extends State<ProductManagementScreen> {
               ),
             ],
           ),
-        ]
+        ),
       ),
-    )
-            ]
-          )
-        )
-      )
     );
   }
 }

@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../models/customer_model.dart';
 import '../providers/customer_provider.dart';
 import '../widgets/customer_form.dart';
 
-class CustomerEditScreen extends StatelessWidget {
+class CustomerEditScreen extends ConsumerWidget {
   final Customer customer;
 
   const CustomerEditScreen({
@@ -13,7 +13,7 @@ class CustomerEditScreen extends StatelessWidget {
   });
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     return Scaffold(
       appBar: AppBar(
         title: const Text("Edit Pelanggan"),
@@ -26,11 +26,15 @@ class CustomerEditScreen extends StatelessWidget {
           phone: customer.phone,
           alamat: customer.alamat,
           onSubmit: (name, phone, alamat) async {
-            // Panggil provider untuk update data
-            await Provider.of<CustomerEditScreen>(context, listen: false)
-                .updateCustomer(customer.id, name, phone, alamat);
+            await ref.read(customerProvider.notifier).updateCustomer(
+              customer.id,
+              {
+                "name": name,
+                "phone": phone,
+                "alamat": alamat,
+              },
+            );
 
-            // Tutup halaman setelah berhasil update
             if (context.mounted) {
               Navigator.pop(context);
             }

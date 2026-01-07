@@ -12,31 +12,35 @@ class ProductItem extends StatelessWidget {
       margin: const EdgeInsets.only(bottom: 12),
       padding: const EdgeInsets.all(10),
       decoration: BoxDecoration(
-        color: const Color(0xfff8e8cd),
+        color: const Color(0xfff7e9d9),
         borderRadius: BorderRadius.circular(12),
       ),
       child: Row(
         children: [
-          ClipRRect(
-            borderRadius: BorderRadius.circular(8),
-            child: Image.asset(
-              product.image,
-              width: 50,
-              height: 50,
-              fit: BoxFit.cover,
-            ),
+          Image.asset(
+            product.image,
+            width: 45,
+            height: 45,
+            fit: BoxFit.cover,
           ),
           const SizedBox(width: 12),
+
+          // NAME + PRICE
           Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Text(product.name,
-                  style: const TextStyle(
-                      fontSize: 16, fontWeight: FontWeight.bold)),
-              Text("Rp. ${product.price}",
-                  style: const TextStyle(fontSize: 14)),
+              Text(
+                product.name,
+                style: const TextStyle(
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+              Text(
+                "Rp. ${product.price}",
+                style: const TextStyle(color: Colors.brown),
+              ),
             ],
-          )
+          ),
         ],
       ),
     );

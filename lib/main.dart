@@ -1,12 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
-import 'providers/customer_provider.dart';
-import 'providers/dashboard_provider.dart';
-import 'screens/home_menu_screen.dart';
+
+import 'auth/auth_gate.dart';
 import 'screens/login_screen.dart';
 import 'screens/register_screen.dart';
-import 'screens/product_screen.dart';
+import 'screens/product_management_screen.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -16,7 +15,11 @@ Future<void> main() async {
     anonKey: "YOUR_SUPABASE_ANON_KEY",
   );
 
-  runApp(const MyApp());
+  runApp(
+    const ProviderScope(
+      child: MyApp(),
+    ),
+  );
 }
 
 class MyApp extends StatelessWidget {
@@ -24,26 +27,19 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MultiProvider(
-      providers: [
-        ChangeNotifierProvider(create: (_) => CustomerProvider()),
-        ChangeNotifierProvider(create: (_) => DashboardProvider()),
-      ],
-      child: MaterialApp(
-        debugShowCheckedModeBanner: false,
-        title: "Aplikasi Kasir",
-        theme: ThemeData(
-          primarySwatch: Colors.blue,
-          visualDensity: VisualDensity.adaptivePlatformDensity,
-        ),
-        initialRoute: "/",
-        routes: {
-          "/": (context) => const HomeMenuScreen(),
-          "/login": (context) => const LoginScreen(),
-          "/register": (context) => const RegisterScreen(),
-          "/product": (context) => const ProductManagementScreen(),
-        },
-      ),
+    return MaterialApp(
+      debugShowCheckedModeBanner: false,
+      title: "Aplikasi Kasir",
+      theme: ThemeData(primarySwatch: Colors.blue),
+
+      // 🔥 SATU-SATUNYA ENTRY POINT
+      home: const AuthGate(),
+
+      routes: {
+        "/login": (_) => const LoginScreen(),
+        "/register": (_) => const RegisterScreen(),
+        "/product": (_) => const ProductManagementScreen(),
+      },
     );
   }
 }

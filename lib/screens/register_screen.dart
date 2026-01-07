@@ -18,7 +18,7 @@ class RegisterScreen extends StatelessWidget {
             height: MediaQuery.of(context).size.height * 0.65,
             decoration: const BoxDecoration(
               image: DecorationImage(
-                image: AssetImage('assets/coffee_bg.jpg'), // Ganti path
+                image: AssetImage('assets/coffee_bg.png'), // Ganti path
                 fit: BoxFit.cover,
               ),
             ),

@@ -15,26 +15,23 @@ class CategorySelector extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Row(
-      mainAxisAlignment: MainAxisAlignment.center,
+      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
       children: categories.map((c) {
-        final bool active = (c == selected);
+        final bool active = c == selected;
 
-        return Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 6),
-          child: GestureDetector(
-            onTap: () => onSelected(c),
-            child: Container(
-              padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-              decoration: BoxDecoration(
+        return GestureDetector(
+          onTap: () => onSelected(c),
+          child: Container(
+            padding: const EdgeInsets.symmetric(horizontal: 18, vertical: 6),
+            decoration: BoxDecoration(
+              color: active ? Colors.white : Colors.brown.shade200,
+              borderRadius: BorderRadius.circular(20),
+            ),
+            child: Text(
+              c,
+              style: TextStyle(
                 color: active ? Colors.brown : Colors.white,
-                borderRadius: BorderRadius.circular(20),
-                border: Border.all(color: Colors.brown),
-              ),
-              child: Text(
-                c,
-                style: TextStyle(
-                    color: active ? Colors.white : Colors.brown,
-                    fontWeight: FontWeight.bold),
+                fontWeight: FontWeight.bold,
               ),
             ),
           ),

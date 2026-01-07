@@ -1,3 +1,4 @@
+import 'package:flutter/widgets.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../models/customer_model.dart';
 import '../services/customer_service.dart';
@@ -19,19 +20,19 @@ class CustomerNotifier extends StateNotifier<List<Customer>> {
   // Add
   Future<void> addCustomer(Map<String, dynamic> data) async {
     await CustomerService.create(data);
-    loadCustomers();
+    await loadCustomers();
   }
 
   // Update
   Future<void> updateCustomer(String id, Map<String, dynamic> data) async {
     await CustomerService.update(id, data);
-    loadCustomers();
+    await loadCustomers();
   }
 
   // Delete
   Future<void> deleteCustomer(String id) async {
     await CustomerService.delete(id);
-    loadCustomers();
+    await loadCustomers();
   }
 }
 
