@@ -14,7 +14,7 @@ class HomePage extends StatelessWidget {
           IconButton(
             icon: const Icon(Icons.logout),
             onPressed: () async {
-              await context.read<AuthProvider>().logout();
+              context.read<AuthProvider>().logout();
               // ❌ JANGAN pakai Navigator
               // AuthGate akan otomatis menampilkan Login
             },

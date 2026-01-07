@@ -1,8 +1,7 @@
-import 'package:aplikasi_kasir/screens/dashboard/dashboard_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
-import 'login_screen.dart'; 
-import 'dashboard/dashboard_screen.dart'; // Asumsikan ini adalah path yang benar ke DashboardScreen
+import 'login_screen.dart';
+import 'dashboard/dashboard_screen.dart';
 
 class SplashScreen extends StatefulWidget {
   const SplashScreen({super.key});
@@ -21,22 +20,18 @@ class _SplashScreenState extends State<SplashScreen> {
   }
 
   Future<void> _checkAuth() async {
-    // delay animasi
     await Future.delayed(const Duration(seconds: 2));
 
     final session = supabase.auth.currentSession;
 
-    // Pastikan widget masih ada di tree sebelum melakukan navigasi
-    if (!mounted) return; 
+    if (!mounted) return;
 
     if (session == null) {
-      /// belum login → ke login screen
       Navigator.pushReplacement(
         context,
         MaterialPageRoute(builder: (_) => const LoginScreen()),
       );
     } else {
-      /// sudah login → ke dashboard
       Navigator.pushReplacement(
         context,
         MaterialPageRoute(builder: (_) => const DashboardScreen()),
@@ -47,7 +42,7 @@ class _SplashScreenState extends State<SplashScreen> {
   @override
   Widget build(BuildContext context) {
     return const Scaffold(
-      backgroundColor: Color(0xFF202124), // Warna gelap yang konsisten
+      backgroundColor: Color(0xFF202124),
       body: Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,

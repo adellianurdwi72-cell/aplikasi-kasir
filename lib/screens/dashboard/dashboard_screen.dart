@@ -22,7 +22,7 @@ class DashboardScreen extends StatelessWidget {
               IconButton(
                 icon: const Icon(Icons.logout, color: Colors.black),
                 onPressed: () async {
-                  await context.read<AuthProvider>().logout();
+                  context.read<AuthProvider>().logout();
                   // Tidak perlu Navigator jika pakai AuthGate
                 },
               ),

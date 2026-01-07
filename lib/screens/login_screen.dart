@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
+import '../providers/auth_provider.dart';
 
 // Definisi Warna Kustom
 const Color primaryBrown = Color(0xFFC0A272);
@@ -43,10 +45,10 @@ class _LoginScreenState extends State<LoginScreen> {
           // Content
           Align(
             alignment: Alignment.bottomCenter,
-            child: Container(
-              height: MediaQuery.of(context).size.height * 0.70,
+            child: SingleChildScrollView(
               padding: const EdgeInsets.only(bottom: 20),
               child: Column(
+                mainAxisSize: MainAxisSize.min,
                 crossAxisAlignment: CrossAxisAlignment.stretch,
                 children: [
                   // Login Box
@@ -140,10 +142,7 @@ class _LoginScreenState extends State<LoginScreen> {
                         foregroundColor: primaryBrown,
                         padding: const EdgeInsets.symmetric(vertical: 15),
                         shape: RoundedRectangleBorder(
-                          side: const BorderSide(
-                            color: primaryBrown,
-                            width: 2,
-                          ),
+                          side: const BorderSide(color: primaryBrown, width: 2),
                           borderRadius: BorderRadius.circular(10),
                         ),
                         elevation: 0,
@@ -166,7 +165,7 @@ class _LoginScreenState extends State<LoginScreen> {
     );
   }
 
-  // ================= LOGIN FUNCTION =================
+  // ================= LOGIN FUNCTION (PAKAI AUTHPROVIDER) =================
   Future<void> _handleLogin() async {
     final email = emailController.text.trim();
     final password = passwordController.text.trim();
@@ -178,16 +177,16 @@ class _LoginScreenState extends State<LoginScreen> {
       return;
     }
 
-    try {
-      await Supabase.instance.client.auth.signInWithPassword(
-        email: email,
-        password: password,
-      );
+    final auth = context.read<AuthProvider>();
 
-    } catch (e) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text(e.toString())),
-      );
+    final success = await auth.login(
+      email,
+      password,
+      context,
+    );
+
+    if (success && context.mounted) {
+      Navigator.pushReplacementNamed(context, '/dashboard');
     }
   }
 
